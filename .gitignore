@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+
+# Virtual Environment
+.venv/
+venv/
+
+# IDE
+.idea/
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Runtime data
+自动化工作流组件库/memory/sessions/*
+自动化工作流组件库/memory/tasks/*
+自动化工作流组件库/memory/errors/*
+自动化工作流组件库/memory/quality/*
+自动化工作流组件库/delivery/*
+自动化工作流组件库/knowledge/*
+自动化工作流组件库/workflows/*
+自动化工作流组件库/logs/*
+
+!.gitkeep
