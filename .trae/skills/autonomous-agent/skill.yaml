@@ -1,0 +1,143 @@
+name: autonomous-agent
+version: "1.0.0"
+description: 自主执行总调度器 v1.0 - 强制执行版。触发词：开始、继续、自主执行、autonomous、蜂群。支持5场景决策树、3维度质量把关、Skill自动发现、交付文档生成。
+
+checkpoints:
+  enabled: true
+  mandatory: true
+  fail_on_missing: true
+  
+  required_checkpoints:
+    - id: "checkpoint_0"
+      name: "知识边界感知"
+      description: "判断思考模式 (Fast/Slow/Knowledge) 和置信度"
+      required_output: "[检查点0] 知识边界感知"
+
+    - id: "checkpoint_1"
+      name: "初始化完成"
+      description: "执行 Python 初始化命令"
+      required_output: "[检查点1] 初始化完成"
+      
+    - id: "checkpoint_2"
+      name: "任务拆解完成"
+      description: "分析核心目标、复杂度、执行模式"
+      required_output: "[检查点2] 任务拆解完成"
+      
+    - id: "checkpoint_3"
+      name: "执行阶段"
+      description: "执行子任务 (Swarm/Workflow/Plan)"
+      required_output: "[检查点3] 执行阶段"
+      
+    - id: "checkpoint_4"
+      name: "验证完成"
+      description: "语法检查、功能测试、目标验证"
+      required_output: "[检查点4] 验证完成"
+      
+    - id: "checkpoint_5"
+      name: "交付完成"
+      description: "生成交付文档和文件"
+      required_output: "[检查点5] 交付完成"
+    
+    - id: "checkpoint_6"
+      name: "进化完成"
+      description: "执行 Reflexion Loop，更新记忆库"
+      required_output: "[检查点6] 进化完成"
+
+  forbidden_actions:
+    - "跳过任何检查点"
+    - "在完成步骤1-4之前开始编码"
+    - "省略检查点输出"
+    - "中途停止执行"
+
+trigger_protocol:
+  mandatory: true
+  no_exceptions: true
+  immediate_execution: true
+  
+  trigger_words:
+    - "开始"
+    - "继续"
+    - "自主执行"
+    - "autonomous"
+    - "蜂群"
+    - "swarm"
+  
+  on_trigger:
+    action: "INVOKE_SKILL_IMMEDIATELY"
+
+execution_protocol:
+  continuous: true
+  no_stopping: true
+  
+  swarm_mode:
+    parallel_execution: true
+    single_message_launch: true
+  
+  solo_mode:
+    sequential_execution: true
+    no_interruption: true
+  
+  final_steps_mandatory:
+    - "quality_check"
+    - "delivery_generation"
+    - "memory_save"
+
+swarm:
+  enabled: true
+  agent_registry: "自动化工作流组件库/swarm/agent_registry.json"
+  
+  workers:
+    researcher:
+      subagent_type: "search"
+      description: "调研和验证标准制定"
+      
+    coder:
+      subagent_type: "backend-architect"
+      description: "代码实现"
+      
+    frontend:
+      subagent_type: "frontend-implementation-expert"
+      description: "前端界面实现"
+      
+    tester:
+      subagent_type: "testing-validation-expert"
+      description: "测试和验证"
+
+triggers:
+  - "开始"
+  - "继续"
+  - "自主执行"
+  - "autonomous"
+  - "蜂群"
+  - "swarm"
+
+category: "automation"
+tags:
+  - "autonomous"
+  - "routing"
+  - "validation"
+  - "self-healing"
+  - "workflow"
+  - "swarm"
+
+knowledge_research:
+  enabled: true
+  mandatory: true
+  memory_dir: "自动化工作流组件库/memory"
+
+validation:
+  enabled: true
+  strict: true
+
+execution:
+  agent_script: ".trae/skills/autonomous-agent/agent.py"
+
+integration:
+  workflow_dirs:
+    - "自动化工作流组件库/workflows"
+
+auto_execute:
+  on_trigger: true
+  auto_heal: true
+  max_heal_attempts: 999
+  never_stop: true
